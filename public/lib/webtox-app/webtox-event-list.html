@@ -1,0 +1,103 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="webtox-event-list">
+
+  <style>
+    // The inner th's should be left-aligned, the outer th's centered.
+    th {
+      text-align: left;
+    }
+    td {
+      vertical-align: top;
+    }
+  </style>
+
+  <template>
+
+    <table>
+      <tr><th>Timestamp</th><th>Event</th></tr>
+      <template is="dom-repeat" items="[[events.success.events]]">
+        <tr>
+          <td>[[formatDate(item.timestamp)]]</td>
+          <td>
+            <template is="dom-if" if="[[item.e_started_tox_instance]]">
+              Started Tox Instance
+            </template>
+            <template is="dom-if" if="[[item.e_set_info_success]]">
+              Set info:
+              <table>
+                <tr><th>Name</th><td>[[item.e_set_info_success.name]]</td></tr>
+                <tr><th>Status message</th><td>[[item.e_set_info_success.status_message]]</td></tr>
+                <tr><th>Status</th><td>[[item.e_set_info_success.status]]</td></tr>
+                <tr><th>Nospam</th><td>[[item.e_set_info_success.nospam]]</td></tr>
+              </table>
+            </template>
+
+            <template is="dom-if" if="[[item.e_self_connection_status]]">
+              Connection status: [[item.e_self_connection_status.connection_status]]
+            </template>
+            <template is="dom-if" if="[[item.e_friend_name]]">
+              TODO: FriendName
+            </template>
+            <template is="dom-if" if="[[item.e_friend_status_message]]">
+              TODO: FriendStatusMessage
+            </template>
+            <template is="dom-if" if="[[item.e_friend_status]]">
+              Friend [[item.e_friend_status.friend_number]] status:
+              [[item.e_friend_status.status]].
+            </template>
+            <template is="dom-if" if="[[item.e_friend_connection_status]]">
+              Friend [[item.e_friend_connection_status.friend_number]] connection status:
+              [[item.e_friend_connection_status.connection_status]].
+            </template>
+            <template is="dom-if" if="[[item.e_friend_typing]]">
+              TODO: FriendTyping
+            </template>
+            <template is="dom-if" if="[[item.e_friend_read_receipt]]">
+              TODO: FriendReadReceipt
+            </template>
+            <template is="dom-if" if="[[item.e_friend_request]]">
+              Received friend request from [[item.e_friend_request.public_key]]: "[[item.e_friend_request.message]]"
+            </template>
+            <template is="dom-if" if="[[item.e_friend_message]]">
+              TODO: FriendMessage
+            </template>
+            <template is="dom-if" if="[[item.e_file_recv_control]]">
+              TODO: FileRecvControl
+            </template>
+            <template is="dom-if" if="[[item.e_file_chunk_request]]">
+              TODO: FileChunkRequest
+            </template>
+            <template is="dom-if" if="[[item.e_file_recv]]">
+              TODO: FileRecv
+            </template>
+            <template is="dom-if" if="[[item.e_file_recv_chunk]]">
+              TODO: FileRecvChunk
+            </template>
+            <template is="dom-if" if="[[item.e_friend_lossy_packet]]">
+              TODO: FriendLossyPacket
+            </template>
+            <template is="dom-if" if="[[item.e_friend_lossless_packet]]">
+              TODO: FriendLosslessPacket
+            </template>
+          </td>
+        </tr>
+      </template>
+    </table>
+
+  </template>
+
+  <script>
+    require(["moment"], function(moment) {
+      Polymer({
+        is: 'webtox-event-list',
+
+        formatDate: function(timestamp) {
+          //return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
+          return moment(timestamp).format("HH:mm:ss");
+        }
+      });
+    });
+  </script>
+
+</dom-module>

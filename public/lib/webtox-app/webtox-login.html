@@ -1,0 +1,71 @@
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-form/iron-form.html">
+
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-card/paper-card.html">
+
+<link rel="import" href="../platinum-push-messaging/platinum-push-messaging.html">
+
+<dom-module id="webtox-login">
+
+  <template>
+
+    <platinum-push-messaging on-platinum-push-messaging-click="propagateEvents"
+                             on-platinum-push-messaging-push="propagateEvents"
+                             on-platinum-push-messaging-error="showPlatinumError"
+                             subscription="{{pushEndpoint}}"
+                             title="WebTox event"
+                             id="pushNotifications"
+                             message="WebTox received a message"
+                             click-url="/"
+                             icon-url="/launcher-icon-1x.png"
+                             tag="webtox-push-notification">
+      <script>
+        if (pushNotifications.supported) {
+          pushNotifications.enable();
+        }
+      </script>
+    </platinum-push-messaging>
+
+    <template is="dom-if" if="[[if]]">
+
+      <paper-card heading="Login">
+        <div class="card-content">
+          <form is="iron-form" id="loginForm" action="/api/login" on-iron-form-response="loginSuccess">
+            <paper-input name="username" label="Username"></paper-input>
+            <paper-input name="password" label="Password"></paper-input>
+            <input name="endpoint" type="hidden" value="[[pushEndpoint.endpoint]]">
+            <paper-button on-tap="loginFormSubmit">Login</paper-button>
+          </form>
+        </div>
+      </paper-card>
+
+    </template>
+
+  </template>
+
+
+  <script>
+    Polymer({
+      is: 'webtox-login',
+
+      showPlatinumError: function(event, detail) {
+        alert("Error while trying to enable push notifications: " + detail);
+      },
+
+      loginFormSubmit: function(event) {
+        loginForm.submit();
+      },
+
+      loginSuccess: function(event) {
+        this.fire('login');
+      },
+
+      propagateEvents: function(event, detail) {
+        this.fire('event-ready', detail);
+      }
+    });
+  </script>
+
+</dom-module>

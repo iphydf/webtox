@@ -1,0 +1,33 @@
+<!doctype html>
+<title>WebTox</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+
+<!-- Set up RequireJS configuration with WebJars. -->
+<script>
+  @Html(org.webjars.RequireJS.getSetupJavaScript(routes.WebJarAssets.at("").url))
+</script>
+
+<!-- Load RequireJS script. -->
+<script src='@routes.WebJarAssets.at(WebJarAssets.locate("require.min.js"))'></script>
+
+<!-- WebComponents polyfills. -->
+<script src="assets/lib/webcomponentsjs/webcomponents-lite.js"></script>
+
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+</style>
+
+<!-- Load the main app. -->
+<link rel="import" href="assets/lib/webtox-app/webtox-app.html">
+
+<!-- Instantiate the app. -->
+<webtox-app></webtox-app>

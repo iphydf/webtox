@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package models.proto;
+
+message Savedata {
+  string secretKey = 1;
+  string subscriptionId = 2;
+}

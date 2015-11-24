@@ -1,0 +1,77 @@
+<link rel="import" href="webtox-client-state.html">
+<link rel="import" href="webtox-event-list.html">
+
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-form/iron-form.html">
+
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-card/paper-card.html">
+
+<dom-module id="webtox-overview">
+
+  <template>
+
+    <iron-ajax auto
+               id="fetchEvents"
+               url="/api/getEvents"
+               params='{"timestamp": 0}'
+               handle-as="json"
+               last-response="{{latestEvents}}"></iron-ajax>
+
+    <webtox-client-state state="{{clientState}}" events="[[latestEvents]]"></webtox-client-state>
+
+    <paper-card heading="Instance info">
+      <div class="card-content">
+        Address: [[clientState.address]]
+        <form is="iron-form" id="setInfoForm" action="/api/setInfo">
+          <paper-input name="name" label="Nickname" value="[[clientState.name]]"></paper-input>
+          <paper-input name="statusMessage" label="Status message" value="[[clientState.statusMessage]]"></paper-input>
+          <paper-input name="status" label="Status" value="[[clientState.status]]"></paper-input>
+          <paper-input id="nospam" name="nospam" label="Nospam" value="[[clientState.nospam]]"></paper-input>
+          <paper-button on-tap="submitForm">Save</paper-button>
+          <paper-button on-tap="logout">Logout</paper-button>
+        </form>
+      </div>
+    </paper-card>
+
+    <paper-card heading="Events">
+      <div class="card-content">
+        <webtox-event-list events="[[latestEvents]]"></webtox-event-list>
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    require(["jquery"], function($) {
+      Polymer({
+        is: 'webtox-overview',
+
+        ready: function() {
+          document.body.onfocus = this.updateEvents;
+        },
+
+        updateEvents: function() {
+          fetchEvents.params = {
+            // timestamp: new Date().getTime()
+            timestamp: 0 // TODO(iphydf): Use current time and save the old events.
+          };
+        },
+
+        submitForm: function() {
+          setInfoForm.submit();
+        },
+
+        logout: function() {
+          var self = this;
+          this.latestEvents = { success: { events: [] } };
+          $.ajax("/api/logout").done(function() {
+            self.fire('logout');
+          });
+        }
+      });
+    });
+  </script>
+
+</dom-module>

@@ -1,0 +1,25 @@
+username=Username
+password=Password
+name=Name
+status=Status
+statusMessage=Status Message
+nospam=Nospam
+friendAddress=Friend Address
+publicKey=Public Key
+secretKey=Secret Key
+dhtId=DHT Public Key
+tcpPort=TCP Port
+udpPort=UDP Port
+friends=Friends
+login=Sign In
+message=Message
+addFriend=Add Friend
+friendNumber=Number
+events=Events
+date=Date
+event=Event
+thisInstance=This instance
+change=Change
+
+error.format=Input is not a valid {0}
+error.enum_format=Input not a valid {0}; valid options are: {1}

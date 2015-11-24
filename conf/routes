@@ -1,0 +1,20 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Main page in Scala to set up variables from the app.
+GET     /                           controllers.Homepage.index
+
+# Login/authentication.
+GET     /api/login                  controllers.Authentication.authenticate
+GET     /api/logout                 controllers.Authentication.logout
+GET     /api/loginStatus            controllers.Authentication.loginStatus
+
+# Basic authenticated API.
+GET     /api/getEvents              controllers.Api.getEvents
+GET     /api/setInfo                controllers.Api.setInfo
+
+# Map everything else to static files.
+GET     /manifest.json              controllers.Assets.at(path="/public", file="manifest.json")
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /webjars/*file              controllers.WebJarAssets.at(file)

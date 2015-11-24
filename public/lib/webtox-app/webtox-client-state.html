@@ -1,0 +1,55 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="webtox-client-state">
+
+  <script>
+    function getInitial(events, member) {
+      for (i in events) {
+        var changeEvent = events[i].started_tox_instance;
+        if (changeEvent) {
+          return changeEvent[member];
+        }
+      }
+    }
+
+    require(["moment"], function(moment) {
+      Polymer({
+        is: 'webtox-client-state',
+
+        properties: {
+          events: Array,
+
+          state: {
+            type: Object,
+            notify: true,
+            computed: 'computeState(events)'
+          }
+        },
+
+        computeState: function(events, member) {
+          events = events.success.events;
+          var state = {
+            address: null,
+            name: null,
+            statusMessage: null,
+            status: null,
+            nospam: null
+          };
+          x = events;
+          for (i in events) {
+            var event = events[i];
+
+            var changeEvent = event.e_started_tox_instance || event.e_set_info_success;
+            if (changeEvent) {
+              for (key in state) {
+                state[key] = changeEvent[key] || state[key];
+              }
+            }
+          }
+          return state;
+        }
+      });
+    });
+  </script>
+
+</dom-module>
